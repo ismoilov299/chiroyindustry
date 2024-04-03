@@ -1,9 +1,12 @@
-import { useState } from "react";
+import "swiper/css";
+import Hero from "./components/sections/hero";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <div></div>;
+  return (
+    <>
+      <Hero />
+    </>
+  );
 }
 
 export default App;

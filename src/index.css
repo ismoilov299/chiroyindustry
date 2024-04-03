@@ -80,3 +80,16 @@
     @apply flex justify-center items-center;
   }
 }
+
+#pagination-wrapper .hero-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: gray;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#pagination-wrapper .hero-bullet.hero-bullet-active {
+  background: #d41b22;
+  border-color: transparent;
+}
