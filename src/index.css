@@ -71,7 +71,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-[200vh];
+  }
+
+  html {
+    @apply scroll-smooth;
   }
 }
 
@@ -92,4 +96,8 @@
 #pagination-wrapper .hero-bullet.hero-bullet-active {
   background: #d41b22;
   border-color: transparent;
+}
+
+.phone-input .PhoneInputCountry {
+  display: none;
 }
