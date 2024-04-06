@@ -41,6 +41,11 @@ SEND_LOCATION = {
     2: "📍 Отправить местоположение"
 }
 
+TEXT_ASK_LOCATION = {
+    1:"Endi manzilingizni yuboring",
+    2:"Endi manzilingizni yuboring"
+}
+
 TEXT_ENTER_CONTACT = {
     1: "Iltimos telefon raqamingizni yozing yoki <b>📞 Yuborish</b> tugmasini bosing:",
     2: "Введите свой номер телефона или нажмите кнопку <b>📞 Отправить </b>:"
@@ -53,7 +58,7 @@ TEXT_MAIN_MENU = {
 
 BTN_ORDER = {
     1:"Buyurtma berish",
-    2:"Разместить заказ"
+    2:"Сделать заказ"
 }
 
 TEXT_ORDER = {
@@ -214,13 +219,13 @@ TEXT_REGION_2 = {
 }
 
 BTN_TEXT_UZUM_1 = {
-    1:"Uzum marketdan",
-    2:"Uzum marketdan"
+    1:"Uzum market",
+    2:"Uzum market"
 }
 
 BTN_TEXT_UZUM_2 = {
-    1:"Botdan",
-    2:"Botdan"
+    1:"Kuryer orqali",
+    2:"Курьером"
 }
 
 INFO_PRODUCT_TEXT = {
@@ -228,4 +233,65 @@ INFO_PRODUCT_TEXT = {
       "Dermion paxta yostiqchasi yordamida kuniga 2 marta - ertalab va kechqurun toza teriga, husnbuzar bor joyga surting. Qo’llashdan oldin flakonni chayqatish kerak.Vositani ko'z va burun shilliq qavatiga tushishiga yo’l qo’ymang.Mahsulotni qo'llaganingizdan so'ng quyosh nurlaridan saqlaning. Preparatni 0 ° C dan + 25 ° C gacha haroratda, quruq, quyosh nurlaridan himoyalangan joyda saqlang.",
     2:"Способ применения Dermion:\n"
       "Наносить с помощью ватного диска, локально на пораженные участки кожи лица и тела. Избегая попадания жидкости в глаза и слизистые носа. Наносить 2 раза в сутки утром и вечером после умывания. Избегать прямых попаданий солнечных лучей и не находиться у открытого огня. Перед применением взболтать флакон. Условия хранения:Хранить при температуре не выше 25 °С , в сухом, защищенном от детей и света месте."
+}
+
+DELIVER_TEXT = {
+    1:"Qayerdan buyurtma bermoqchisiz?",
+    2:"Выберите способ доставки"
+}
+ASK_PRODUCT = {
+    1:"Mahsulotdan nechda buyurtma qilasiz?",
+    2:"Сколько товара вы закажете?"
+}
+
+TEXT_ERROR_PHONE = {
+    1:"+998 bilan boshlanadigan haqiqiy telefon raqamini kiriting yoki kontaktingizni jo'nating ko'ring.",
+    2:"Введите действительный номер телефона, начинающийся с +998, или отправьте свой контакт."
+}
+
+TEXT_REGION_ASK = {
+    1:"Kerakli regioni tanlang",
+    2:"Выберите желаемый регион"
+}
+INFO_USER_ORDER = {
+    1:"Ma'lumotlaringiz:",
+    2:"Ваша информация:"
+}
+INFO_USER_ORDER_NAME = {
+    1:"Ism:",
+    2:"Имя:"
+}
+
+INFO_USER_ORDER_PHONE = {
+    1:"Telefon raqam:",
+    2:"Номер телефона:"
+}
+INFO_USER_ORDER_PRODUCT = {
+    1:"Mahsulotlar soni:",
+    2:"Количество продуктов:"
+}
+
+INFO_USER_ORDER_ASK = {
+    1:"Ma'lumotlar to'g'ri mi?:",
+    2:"Информация верна?"
+}
+
+CONFIRMATION_YES = {
+    1:"Ha",
+    2:"Да"
+}
+
+CONFIRMATION_NO = {
+    1:"Yo'q",
+    2:"Нет"
+}
+
+NOTIFY_OREDER = {
+    1:"Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz. Sizning buyurtma raqamingiz:",
+    2:"Ваш заказ принят. Мы свяжемся с вами в ближайшее время. Номер вашего заказа:"
+}
+
+ACCEPT_ORDER = {
+    1: "Buyurtmangiz qabul qilindi",
+    2: "Ваш заказ принят"
 }

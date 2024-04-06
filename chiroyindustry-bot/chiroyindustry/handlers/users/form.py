@@ -17,7 +17,7 @@ async def handle_language_selection(message: types.Message, state: FSMContext):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     regions = [texts.BTN_TEXT_UZUM_1[lang_id], texts.BTN_TEXT_UZUM_2[lang_id]]
     keyboard.add(*regions)
-    await message.answer("Qayerdan buyurtma bermoqchisiz?",reply_markup=keyboard)
+    await message.answer(f"{texts.DELIVER_TEXT[lang_id]}",reply_markup=keyboard)
     await Form.market.set()
 
 @dp.message_handler(lambda message: message.text in [texts.BTN_TEXT_UZUM_1[1], texts.BTN_TEXT_UZUM_1[2]],state=Form.market)
@@ -48,7 +48,6 @@ async def uzum_order(message:types.Message,state: FSMContext):
 
 @dp.message_handler(lambda message: message.text in [texts.BTN_TEXT_UZUM_2[1], texts.BTN_TEXT_UZUM_2[2]],state=Form.market)
 async def bot_order(message:types.Message,state: FSMContext):
-
     user_id = message.from_user.id
     lang_id = db.get_user_language_id(user_id)
     await message.answer(texts.TEXT_ENTER_FIRST_NAME[lang_id], reply_markup=types.ReplyKeyboardRemove())
@@ -57,21 +56,23 @@ async def bot_order(message:types.Message,state: FSMContext):
 @dp.message_handler(state=Form.name)
 async def phone_number(message: types.Message, state: FSMContext):
     name = message.text
-    print(name)
+    user_id = message.from_user.id
+    lang_id = db.get_user_language_id(user_id)
     await state.update_data(name=name)
     user_id = message.from_user.id
     db.update_user_field(user_id, "first_name", name)
-    button_phone = types.KeyboardButton(text="Raqamni yuborish", request_contact=True)
+    button_phone = types.KeyboardButton(text=f"{texts.BTN_SEND_CONTACT[lang_id]}", request_contact=True)
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     keyboard.add(button_phone)
 
-    await message.answer(f"{name} endi telefon raqamingizni kiriting", reply_markup=keyboard)
+    await message.answer(f"{texts.TEXT_ENTER_CONTACT[lang_id]}", reply_markup=keyboard)
     await Form.phone.set()
 
 
 @dp.message_handler(state=Form.phone, content_types=[types.ContentType.TEXT, types.ContentType.CONTACT])
 async def process_phone_number(message: types.Message, state: FSMContext):
     user_id = message.chat.id
+    lang_id = db.get_user_language_id(user_id)
 
     if message.content_type == types.ContentType.CONTACT:
         phone_number = message.contact.phone_number
@@ -79,12 +80,12 @@ async def process_phone_number(message: types.Message, state: FSMContext):
         if message.text.startswith("+998"):
             phone_number = message.text
         else:
-            await message.answer("+998 bilan boshlanadigan haqiqiy telefon raqamini kiriting yoki kontaktingizni baham ko'ring.")
+            await message.answer(f"{texts.TEXT_ERROR_PHONE[lang_id]}")
             return
 
     await state.update_data(phone_number=phone_number)
     db.update_user_field(chat_id=user_id, key='phone_number', value=phone_number)
-    await message.answer("Mahsulotdan nechda buyurtma qilasiz",reply_markup=types.ReplyKeyboardRemove())
+    await message.answer(f"{texts.ASK_PRODUCT[lang_id]}",reply_markup=types.ReplyKeyboardRemove())
     await Form.product.set()
 
 @dp.message_handler(state=Form.product,content_types=types.ContentType.TEXT)
@@ -97,7 +98,7 @@ async def product_count(message: types.Message,state: FSMContext):
 
     regions = [texts.TEXT_REGION_1[lang_id], texts.TEXT_REGION_2[lang_id]]
     keyboard_region.add(*regions)
-    await message.answer("Kerakli regioni tanlang",reply_markup=keyboard_region)
+    await message.answer(f"{texts.TEXT_REGION_ASK[lang_id]}",reply_markup=keyboard_region)
     await Form.region.set()
 
 @dp.message_handler(state=Form.region)
@@ -106,10 +107,10 @@ async def region(message: types.Message,state: FSMContext):
     lang_id = db.get_user_language_id(user_id)
     if message.text == texts.TEXT_REGION_1[lang_id]:
 
-        location_button = KeyboardButton(text="Manzilingizni yuboring📍", request_location=True)
+        location_button = KeyboardButton(text=f"{texts.SEND_LOCATION[lang_id]}", request_location=True)
 
         Keyboard = ReplyKeyboardMarkup(resize_keyboard=True).add(location_button)
-        await message.answer('Endi manzilingizni yuboring',reply_markup=Keyboard)
+        await message.answer(f"{texts.TEXT_ASK_LOCATION[lang_id]}",reply_markup=Keyboard)
 
         await Form.location.set()
 
@@ -122,6 +123,9 @@ async def process_location(message: types.Message, state: FSMContext):
     print(message.location)
     location = message.location
 
+    user_id = message.chat.id
+    lang_id = db.get_user_language_id(user_id)
+
 
     await state.update_data(admin_location=location)
 
@@ -133,16 +137,16 @@ async def process_location(message: types.Message, state: FSMContext):
 
 
     confirmation_message = (
-        f"Ma'lumotlaringiz:\n"
-        f"Ism: {name}\n"
-        f"Telefon raqami: {phone_number}\n"
-        f"Mahsulotlar soni: {product_count}\n"
-        "Ma'lumotlar to'g'ri mi?"
+        f"{texts.INFO_USER_ORDER[lang_id]}\n"
+        f"{texts.INFO_USER_ORDER_NAME[lang_id]} {name}\n"
+        f"{texts.INFO_USER_ORDER_PHONE[lang_id]} {phone_number}\n"
+        f"{texts.INFO_USER_ORDER_PRODUCT[lang_id]} {product_count}\n"
+        f"{texts.INFO_USER_ORDER_ASK[lang_id]}"
     )
 
     keyboard = InlineKeyboardMarkup(row_width=2)
-    yes_button = InlineKeyboardButton(text="Ha", callback_data="confirm_yes")
-    no_button = InlineKeyboardButton(text="Yo'q", callback_data="confirm_no")
+    yes_button = InlineKeyboardButton(text=f"{texts.CONFIRMATION_YES[lang_id]}", callback_data="confirm_yes")
+    no_button = InlineKeyboardButton(text=f"{texts.CONFIRMATION_NO[lang_id]}", callback_data="confirm_no")
     keyboard.add(yes_button, no_button)
 
     await message.answer(confirmation_message, reply_markup=keyboard)
@@ -150,7 +154,7 @@ async def process_location(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(lambda query: query.data == 'confirm_yes', state=Form.location)
 async def confirm_yes(callback_query: types.CallbackQuery, state: FSMContext):
     user_id = callback_query.from_user.id
-    print(user_id)
+    lang_id = db.get_user_language_id(user_id)
     user_data = await state.get_data()
     location = user_data.get('admin_location', None)
 
@@ -170,9 +174,9 @@ async def confirm_yes(callback_query: types.CallbackQuery, state: FSMContext):
 
     db.add_order(user_id=user_id, status='1', amount=product_count, order_id=order_id, created_at=created_at)
 
-    await bot.send_message(user_id, "Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz")
-
-    await callback_query.answer("Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz")
+    # await bot.send_message(user_id, "Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz")
+    #
+    # await callback_query.answer("Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz")
 
     await state.finish()
 
@@ -186,7 +190,7 @@ async def confirm_yes(callback_query: types.CallbackQuery, state: FSMContext):
     )
 
 
-    admin_id = 1161180912
+    admin_id = 1161180912  #-4199719807
     keyboard_send_message = InlineKeyboardMarkup()
     deactivate_button = InlineKeyboardButton(
         "Yetkazib berildi",
@@ -203,10 +207,10 @@ async def confirm_yes(callback_query: types.CallbackQuery, state: FSMContext):
 
     # Notify the user that their order has been received
     user_id = callback_query.from_user.id
-    await bot.send_message(user_id, "Buyurtmangiz qabul qilindi. Tez orada siz bilan bog'lanamiz")
+    await bot.send_message(user_id, f"{texts.NOTIFY_OREDER[lang_id]}")
 
     # Respond to the user's confirmation query
-    await callback_query.answer("Buyurtmangiz qabul qilindi.")
+    await callback_query.answer(f"{texts.ACCEPT_ORDER[lang_id]}")
 
     # Clear the state
     await state.finish()
